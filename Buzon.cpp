@@ -25,21 +25,27 @@ Buzon::~Buzon(){
 }
 
 int Buzon::Enviar(char * nmsj){
-    my_msgbuf sender;
-    ssize_t len = sizeof(sender)-sizeof(long);
-    sender.mtype = 180;
+    struct my_msgbuf sender;
+    ssize_t len = sizeof(sender.msj)-sizeof(long);
+    sender.mtype = 1;
     //strcpy(sender.msj, msj);
     strncpy(sender.msj, nmsj , MSGSIZE);
     int st = msgsnd(id,&sender,len, IPC_NOWAIT);
-    if(-1 == id){ //hubo error
+    if(-1 == st){ //hubo error
         perror("Buzon::enviar falló");
         exit(2);
     }
 }
 
 int Buzon::Recibir(char *mensaje, int len) {
-    my_msgbuf receiver;
-    len = sizeof(receiver);
-    strncpy(receiver.msj, mensaje , MSGSIZE);
-
+    struct my_msgbuf receiver;
+    int st = msgrcv(id,&receiver, len,1,MSG_NOERROR | IPC_NOWAIT);
+    //strncpy(receiver.msj, mensaje , MSGSIZE);
+    if(-1 == st){ //hubo error
+        perror("Buzon::recibir falló");
+        exit(2);
+    } else{
+        mensaje = receiver.msj;
+        printf("El mensaje recibido es: %s\n", mensaje);
+    }
 }

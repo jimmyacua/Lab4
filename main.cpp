@@ -4,28 +4,38 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <time.h>
 #include "Semaforo.h"
 #include "Buzon.h"
 
-int main() {
+int main(int argc, char *argv[]) {
     Semaforo s;
     Buzon b;
-    int i, id;
+
+    /*int i, id;
     char a[80];
 
     id = fork();
     if ( id ) {
-        printf( "Escriba un numero y  para enviar el mensaje\n" );
+        printf("Escriba un numero y  para enviar el mensaje\n");
         scanf( "%i", &i );
-        b.Enviar( "Hola mundo" );
+        b.Enviar("Hola");
         exit(0);
 
     }
     else {
         printf( "Esperando que el mensaje llegue  ...\n" );
         b.Recibir( a, 80 );
-        printf( "El mensaje recibido es: %s \n", a );
-    }
+        //printf( "El mensaje recibido es: %s \n", a );
+        exit(0);
+    }*/
+
+    char a[80];
+    b.Enviar("hola mundo");
+    printf("Mensaje enviado \n");
+    b.Recibir(a,80);
+
+
 /*
     if ( fork() ) {
         for (int i = 0; i < 10; i++ )
@@ -39,4 +49,5 @@ int main() {
         printf( "Semaforo activado\n" );
     }
     */
+    return 0;
 }
